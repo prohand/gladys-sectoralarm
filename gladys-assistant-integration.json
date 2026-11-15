@@ -1,0 +1,689 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Sector Alarm",
+  "description": {
+    "en": "Arm and disarm your Sector Alarm system, drive its locks and plugs, follow its sensors.",
+    "fr": "Armez et désarmez votre alarme Sector Alarm, pilotez serrures et prises, suivez ses capteurs.",
+    "de": "Schalte deine Sector-Alarm-Anlage scharf/unscharf, steuere Schlösser, Steckdosen, Sensoren.",
+    "es": "Arme y desarme su alarma Sector Alarm, controle cerraduras y enchufes, siga sus sensores."
+  },
+  "version": "1.0.0",
+  "docker_image": "ghcr.io/prohand/gladys-sectoralarm:1.0.0",
+  "gladys_version": ">=5.3.0",
+  "cover_image": "https://raw.githubusercontent.com/prohand/gladys-sectoralarm/main/cover.png",
+  "categories": ["security"],
+  "keywords": [
+    "sector",
+    "alarm",
+    "alarme",
+    "alarm panel",
+    "smart lock",
+    "yale doorman",
+    "smart plug",
+    "door sensor",
+    "smoke detector",
+    "leak detector"
+  ],
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Getting started",
+        "fr": "Pour commencer",
+        "de": "Erste Schritte",
+        "es": "Primeros pasos"
+      },
+      "description": {
+        "en": "Sector Alarm has no local API: the integration talks to the Sector Alarm cloud with the account of the Sector Alarm app. Fill in its email and password; the panels, locks, smart plugs and sensors of the account then appear in Discovery. The panel code is only needed to disarm, to drive the locks, and to arm a panel whose quick arm is off.",
+        "fr": "Sector Alarm n'a pas d'API locale : l'intégration passe par le cloud Sector Alarm avec le compte de l'application Sector Alarm. Renseignez son e-mail et son mot de passe ; les centrales, serrures, prises et capteurs du compte apparaissent ensuite dans la Découverte. Le code de la centrale ne sert qu'à désarmer, à piloter les serrures, et à armer une centrale dont l'armement rapide est désactivé.",
+        "de": "Sector Alarm hat keine lokale API: Die Integration spricht mit der Sector-Alarm-Cloud, mit dem Konto der Sector-Alarm-App. Gib dessen E-Mail-Adresse und Passwort ein; die Zentralen, Schlösser, Steckdosen und Sensoren des Kontos erscheinen dann in der Geräteerkennung. Der Code der Zentrale wird nur zum Unscharfschalten, für die Schlösser und zum Scharfschalten einer Zentrale ohne Schnellaktivierung benötigt.",
+        "es": "Sector Alarm no tiene API local: la integración pasa por la nube de Sector Alarm con la cuenta de la app Sector Alarm. Indique su correo y su contraseña; las centrales, cerraduras, enchufes y sensores de la cuenta aparecen después en Descubrimiento. El código de la central solo sirve para desarmar, controlar las cerraduras y armar una central cuyo armado rápido está desactivado."
+      },
+      "links": [
+        {
+          "url": "https://github.com/prohand/gladys-sectoralarm/blob/main/docs/en.md",
+          "label": {
+            "en": "Integration documentation",
+            "fr": "Documentation de l'intégration",
+            "de": "Dokumentation der Integration",
+            "es": "Documentación de la integración"
+          }
+        }
+      ]
+    },
+    {
+      "key": "email",
+      "type": "string",
+      "label": {
+        "en": "Email",
+        "fr": "E-mail",
+        "de": "E-Mail",
+        "es": "Correo electrónico"
+      },
+      "description": {
+        "en": "The email you sign in to the Sector Alarm app with.",
+        "fr": "L'e-mail avec lequel vous vous connectez à l'application Sector Alarm.",
+        "de": "Die E-Mail-Adresse, mit der du dich in der Sector-Alarm-App anmeldest.",
+        "es": "El correo con el que inicia sesión en la app Sector Alarm."
+      },
+      "placeholder": {
+        "en": "name@example.com",
+        "fr": "nom@exemple.fr",
+        "de": "name@beispiel.de",
+        "es": "nombre@ejemplo.es"
+      },
+      "required": true
+    },
+    {
+      "key": "password",
+      "type": "secret",
+      "label": {
+        "en": "Password",
+        "fr": "Mot de passe",
+        "de": "Passwort",
+        "es": "Contraseña"
+      },
+      "description": {
+        "en": "The password of that Sector Alarm account. It is never written to the logs.",
+        "fr": "Le mot de passe de ce compte Sector Alarm. Il n'est jamais écrit dans les journaux.",
+        "de": "Das Passwort dieses Sector-Alarm-Kontos. Es wird nie in die Protokolle geschrieben.",
+        "es": "La contraseña de esa cuenta Sector Alarm. Nunca se escribe en los registros."
+      },
+      "required": true
+    },
+    {
+      "key": "panel_code",
+      "type": "secret",
+      "label": {
+        "en": "Panel code",
+        "fr": "Code de la centrale",
+        "de": "Code der Zentrale",
+        "es": "Código de la central"
+      },
+      "description": {
+        "en": "The code you type on the keypad. Needed to disarm from Gladys, to lock or unlock a door, and to arm a panel whose quick arm is off. Leave it empty and Gladys can only arm (with quick arm on). The dashboard widget never uses it to disarm: it asks for the code every time.",
+        "fr": "Le code que vous tapez sur le clavier. Nécessaire pour désarmer depuis Gladys, verrouiller ou déverrouiller une porte, et armer une centrale dont l'armement rapide est désactivé. Laissé vide, Gladys peut seulement armer (avec l'armement rapide). Le widget du tableau de bord ne s'en sert jamais pour désarmer : il demande le code à chaque fois.",
+        "de": "Der Code, den du am Bedienteil eingibst. Nötig, um aus Gladys unscharf zu schalten, eine Tür zu ver- oder entriegeln und eine Zentrale ohne Schnellaktivierung scharf zu schalten. Leer gelassen kann Gladys nur scharf schalten (mit Schnellaktivierung). Das Dashboard-Widget verwendet ihn nie zum Unscharfschalten: Es fragt jedes Mal nach dem Code.",
+        "es": "El código que teclea en el teclado. Necesario para desarmar desde Gladys, cerrar o abrir una puerta y armar una central cuyo armado rápido está desactivado. Si lo deja vacío, Gladys solo puede armar (con el armado rápido). El widget del panel nunca lo usa para desarmar: pide el código cada vez."
+      },
+      "required": false
+    },
+    {
+      "key": "panel_id",
+      "type": "string",
+      "label": {
+        "en": "Panel id",
+        "fr": "Identifiant de la centrale",
+        "de": "ID der Zentrale",
+        "es": "Identificador de la central"
+      },
+      "description": {
+        "en": "Leave empty to follow every panel of the account. To follow only some, type their ids separated by commas: \"Test the connection\" lists them.",
+        "fr": "Laissez vide pour suivre toutes les centrales du compte. Pour n'en suivre que certaines, tapez leurs identifiants séparés par des virgules : « Tester la connexion » les liste.",
+        "de": "Leer lassen, um allen Zentralen des Kontos zu folgen. Um nur einigen zu folgen, gib ihre IDs durch Kommas getrennt ein: „Verbindung testen“ listet sie auf.",
+        "es": "Déjelo vacío para seguir todas las centrales de la cuenta. Para seguir solo algunas, escriba sus identificadores separados por comas: «Probar la conexión» los lista."
+      },
+      "placeholder": {
+        "en": "empty = every panel",
+        "fr": "vide = toutes les centrales",
+        "de": "leer = alle Zentralen",
+        "es": "vacío = todas las centrales"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "poll_frequency",
+      "type": "number",
+      "label": {
+        "en": "Refresh interval (s)",
+        "fr": "Intervalle de rafraîchissement (s)",
+        "de": "Aktualisierungsintervall (s)",
+        "es": "Intervalo de actualización (s)"
+      },
+      "description": {
+        "en": "How often the Sector Alarm cloud is read, in seconds (30 minimum). Sector Alarm limits the number of requests: below a minute brings little and risks being slowed down.",
+        "fr": "Fréquence de lecture du cloud Sector Alarm, en secondes (30 minimum). Sector Alarm limite le nombre de requêtes : descendre sous la minute apporte peu et risque un ralentissement.",
+        "de": "Wie oft die Sector-Alarm-Cloud gelesen wird, in Sekunden (mindestens 30). Sector Alarm begrenzt die Anzahl der Anfragen: Unter einer Minute bringt es wenig und riskiert eine Drosselung.",
+        "es": "Frecuencia de lectura de la nube de Sector Alarm, en segundos (30 como mínimo). Sector Alarm limita el número de peticiones: bajar de un minuto aporta poco y arriesga una ralentización."
+      },
+      "required": false,
+      "default": 60,
+      "min": 30,
+      "max": 3600
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
+      "timeout_seconds": 60
+    },
+    {
+      "key": "refresh",
+      "label": {
+        "en": "Refresh now",
+        "fr": "Actualiser maintenant",
+        "de": "Jetzt aktualisieren",
+        "es": "Actualizar ahora"
+      },
+      "timeout_seconds": 60
+    }
+  ],
+  "widgets": [
+    {
+      "key": "sector_alarm",
+      "label": {
+        "en": "Sector Alarm",
+        "fr": "Sector Alarm",
+        "de": "Sector Alarm",
+        "es": "Sector Alarm"
+      },
+      "description": {
+        "en": "Alarm mode, connection, open doors, locks and alerts, with arm and disarm buttons.",
+        "fr": "Mode de l'alarme, connexion, ouvertures, serrures et alertes, avec armer et désarmer.",
+        "de": "Alarmmodus, Verbindung, offene Türen, Schlösser und Warnungen, mit Scharf/Unscharf.",
+        "es": "Modo de la alarma, conexión, aperturas, cerraduras y alertas, con armar y desarmar."
+      },
+      "icon": "shield",
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Panel",
+            "fr": "Centrale",
+            "de": "Zentrale",
+            "es": "Central"
+          },
+          "description": {
+            "en": "The panel to show. Empty: the first one of the account.",
+            "fr": "La centrale à afficher. Vide : la première du compte.",
+            "de": "Die anzuzeigende Zentrale. Leer: die erste des Kontos.",
+            "es": "La central que se muestra. Vacío: la primera de la cuenta."
+          },
+          "required": false
+        }
+      ],
+      "action_timeout_seconds": 30
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "alarm_mode_changed",
+      "label": {
+        "en": "The alarm mode changes",
+        "fr": "Le mode de l'alarme change",
+        "de": "Der Alarmmodus ändert sich",
+        "es": "Cambia el modo de la alarma"
+      },
+      "description": {
+        "en": "A Sector Alarm panel was armed, partially armed or disarmed, from anywhere: keypad, app, tag or Gladys.",
+        "fr": "Une centrale Sector Alarm a été armée, armée partiellement ou désarmée, d'où que ce soit : clavier, appli, badge ou Gladys.",
+        "de": "Eine Sector-Alarm-Zentrale wurde scharf, teilweise scharf oder unscharf geschaltet, egal wo: Bedienteil, App, Tag oder Gladys.",
+        "es": "Una central Sector Alarm se ha armado, armado parcialmente o desarmado, desde donde sea: teclado, app, llavero o Gladys."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Panel",
+            "fr": "Centrale",
+            "de": "Zentrale",
+            "es": "Central"
+          },
+          "required": false
+        },
+        {
+          "key": "mode",
+          "type": "multi_select",
+          "label": {
+            "en": "New mode",
+            "fr": "Nouveau mode",
+            "de": "Neuer Modus",
+            "es": "Nuevo modo"
+          },
+          "options": [
+            {
+              "value": "armed",
+              "label": {
+                "en": "Armed",
+                "fr": "Armée",
+                "de": "Scharf",
+                "es": "Armada"
+              }
+            },
+            {
+              "value": "partial",
+              "label": {
+                "en": "Partially armed",
+                "fr": "Armée partiellement",
+                "de": "Teilweise scharf",
+                "es": "Armada parcialmente"
+              }
+            },
+            {
+              "value": "disarmed",
+              "label": {
+                "en": "Disarmed",
+                "fr": "Désarmée",
+                "de": "Unscharf",
+                "es": "Desarmada"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "mode",
+          "type": "string",
+          "label": {
+            "en": "New mode",
+            "fr": "Nouveau mode",
+            "de": "Neuer Modus",
+            "es": "Nuevo modo"
+          }
+        },
+        {
+          "key": "previous_mode",
+          "type": "string",
+          "label": {
+            "en": "Previous mode",
+            "fr": "Mode précédent",
+            "de": "Vorheriger Modus",
+            "es": "Modo anterior"
+          }
+        },
+        {
+          "key": "panel_name",
+          "type": "string",
+          "label": {
+            "en": "Panel name",
+            "fr": "Nom de la centrale",
+            "de": "Name der Zentrale",
+            "es": "Nombre de la central"
+          }
+        },
+        {
+          "key": "user",
+          "type": "string",
+          "label": {
+            "en": "Who did it",
+            "fr": "Qui l'a fait",
+            "de": "Wer es war",
+            "es": "Quién lo hizo"
+          }
+        },
+        {
+          "key": "channel",
+          "type": "string",
+          "label": {
+            "en": "How (keypad, app…)",
+            "fr": "Comment (clavier, appli…)",
+            "de": "Wie (Bedienteil, App…)",
+            "es": "Cómo (teclado, app…)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "panel_connection_changed",
+      "label": {
+        "en": "A panel goes offline or comes back",
+        "fr": "Une centrale se déconnecte ou revient",
+        "de": "Eine Zentrale geht offline oder kommt zurück",
+        "es": "Una central se desconecta o vuelve"
+      },
+      "description": {
+        "en": "Sector Alarm reports that a panel lost its connection, or found it again.",
+        "fr": "Sector Alarm signale qu'une centrale a perdu sa connexion, ou l'a retrouvée.",
+        "de": "Sector Alarm meldet, dass eine Zentrale ihre Verbindung verloren oder wiedergefunden hat.",
+        "es": "Sector Alarm indica que una central ha perdido su conexión, o la ha recuperado."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Panel",
+            "fr": "Centrale",
+            "de": "Zentrale",
+            "es": "Central"
+          },
+          "required": false
+        },
+        {
+          "key": "state",
+          "type": "multi_select",
+          "label": {
+            "en": "Connection",
+            "fr": "Connexion",
+            "de": "Verbindung",
+            "es": "Conexión"
+          },
+          "options": [
+            {
+              "value": "offline",
+              "label": {
+                "en": "Offline",
+                "fr": "Hors ligne",
+                "de": "Offline",
+                "es": "Sin conexión"
+              }
+            },
+            {
+              "value": "online",
+              "label": {
+                "en": "Back online",
+                "fr": "De nouveau en ligne",
+                "de": "Wieder online",
+                "es": "De nuevo en línea"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "state",
+          "type": "string",
+          "label": {
+            "en": "Connection",
+            "fr": "Connexion",
+            "de": "Verbindung",
+            "es": "Conexión"
+          }
+        },
+        {
+          "key": "panel_name",
+          "type": "string",
+          "label": {
+            "en": "Panel name",
+            "fr": "Nom de la centrale",
+            "de": "Name der Zentrale",
+            "es": "Nombre de la central"
+          }
+        }
+      ]
+    },
+    {
+      "key": "lock_operated",
+      "label": {
+        "en": "A smart lock is used",
+        "fr": "Une serrure connectée est actionnée",
+        "de": "Ein smartes Schloss wird betätigt",
+        "es": "Se acciona una cerradura inteligente"
+      },
+      "description": {
+        "en": "A Sector Alarm smart lock was locked or unlocked, or failed to lock, with who did it and how.",
+        "fr": "Une serrure Sector Alarm a été verrouillée ou déverrouillée, ou n'a pas pu se verrouiller, avec qui et comment.",
+        "de": "Ein Sector-Alarm-Schloss wurde ver- oder entriegelt oder konnte nicht verriegeln, mit wer und wie.",
+        "es": "Una cerradura Sector Alarm se ha cerrado o abierto, o no ha podido cerrarse, con quién y cómo."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Lock",
+            "fr": "Serrure",
+            "de": "Schloss",
+            "es": "Cerradura"
+          },
+          "required": false
+        },
+        {
+          "key": "action",
+          "type": "multi_select",
+          "label": {
+            "en": "What happened",
+            "fr": "Ce qui s'est passé",
+            "de": "Was passiert ist",
+            "es": "Qué ha pasado"
+          },
+          "options": [
+            {
+              "value": "lock",
+              "label": {
+                "en": "Locked",
+                "fr": "Verrouillée",
+                "de": "Verriegelt",
+                "es": "Cerrada"
+              }
+            },
+            {
+              "value": "unlock",
+              "label": {
+                "en": "Unlocked",
+                "fr": "Déverrouillée",
+                "de": "Entriegelt",
+                "es": "Abierta"
+              }
+            },
+            {
+              "value": "lock_failed",
+              "label": {
+                "en": "Failed to lock",
+                "fr": "Échec du verrouillage",
+                "de": "Verriegeln fehlgeschlagen",
+                "es": "Cierre fallido"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "action",
+          "type": "string",
+          "label": {
+            "en": "What happened",
+            "fr": "Ce qui s'est passé",
+            "de": "Was passiert ist",
+            "es": "Qué ha pasado"
+          }
+        },
+        {
+          "key": "lock_name",
+          "type": "string",
+          "label": {
+            "en": "Lock name",
+            "fr": "Nom de la serrure",
+            "de": "Name des Schlosses",
+            "es": "Nombre de la cerradura"
+          }
+        },
+        {
+          "key": "user",
+          "type": "string",
+          "label": {
+            "en": "Who did it",
+            "fr": "Qui l'a fait",
+            "de": "Wer es war",
+            "es": "Quién lo hizo"
+          }
+        },
+        {
+          "key": "channel",
+          "type": "string",
+          "label": {
+            "en": "How (keypad, app…)",
+            "fr": "Comment (clavier, appli…)",
+            "de": "Wie (Bedienteil, App…)",
+            "es": "Cómo (teclado, app…)"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "set_alarm_mode",
+      "label": {
+        "en": "Set the alarm mode",
+        "fr": "Changer le mode de l'alarme",
+        "de": "Alarmmodus setzen",
+        "es": "Cambiar el modo de la alarma"
+      },
+      "description": {
+        "en": "Arm, partially arm or disarm a Sector Alarm panel, with the code of the configuration.",
+        "fr": "Arme, arme partiellement ou désarme une centrale Sector Alarm, avec le code de la configuration.",
+        "de": "Schaltet eine Sector-Alarm-Zentrale scharf, teilweise scharf oder unscharf, mit dem Code der Konfiguration.",
+        "es": "Arma, arma parcialmente o desarma una central Sector Alarm, con el código de la configuración."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Panel",
+            "fr": "Centrale",
+            "de": "Zentrale",
+            "es": "Central"
+          },
+          "required": true
+        },
+        {
+          "key": "mode",
+          "type": "select",
+          "label": {
+            "en": "Mode",
+            "fr": "Mode",
+            "de": "Modus",
+            "es": "Modo"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "armed",
+              "label": {
+                "en": "Arm",
+                "fr": "Armer",
+                "de": "Scharf schalten",
+                "es": "Armar"
+              }
+            },
+            {
+              "value": "partial",
+              "label": {
+                "en": "Partially arm",
+                "fr": "Armer partiellement",
+                "de": "Teilweise scharf schalten",
+                "es": "Armar parcialmente"
+              }
+            },
+            {
+              "value": "disarmed",
+              "label": {
+                "en": "Disarm",
+                "fr": "Désarmer",
+                "de": "Unscharf schalten",
+                "es": "Desarmar"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "applied",
+          "type": "boolean",
+          "label": {
+            "en": "Order accepted",
+            "fr": "Ordre accepté",
+            "de": "Befehl angenommen",
+            "es": "Orden aceptada"
+          }
+        },
+        {
+          "key": "mode",
+          "type": "string",
+          "label": {
+            "en": "Mode now",
+            "fr": "Mode actuel",
+            "de": "Aktueller Modus",
+            "es": "Modo actual"
+          }
+        },
+        {
+          "key": "error",
+          "type": "string",
+          "label": {
+            "en": "Reason of a refusal",
+            "fr": "Raison d'un refus",
+            "de": "Grund einer Ablehnung",
+            "es": "Motivo de un rechazo"
+          }
+        }
+      ]
+    },
+    {
+      "key": "refresh_now",
+      "label": {
+        "en": "Read Sector Alarm now",
+        "fr": "Relire Sector Alarm maintenant",
+        "de": "Sector Alarm jetzt lesen",
+        "es": "Leer Sector Alarm ahora"
+      },
+      "description": {
+        "en": "Read the panel and its sensors now instead of waiting for the next refresh.",
+        "fr": "Relit la centrale et ses capteurs tout de suite, sans attendre le prochain rafraîchissement.",
+        "de": "Liest die Zentrale und ihre Sensoren sofort, statt auf die nächste Aktualisierung zu warten.",
+        "es": "Lee la central y sus sensores ahora, sin esperar a la próxima actualización."
+      },
+      "timeout_seconds": 60,
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Panel",
+            "fr": "Centrale",
+            "de": "Zentrale",
+            "es": "Central"
+          },
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "mode",
+          "type": "string",
+          "label": {
+            "en": "Alarm mode",
+            "fr": "Mode de l'alarme",
+            "de": "Alarmmodus",
+            "es": "Modo de la alarma"
+          }
+        },
+        {
+          "key": "online",
+          "type": "boolean",
+          "label": {
+            "en": "Panel online",
+            "fr": "Centrale en ligne",
+            "de": "Zentrale online",
+            "es": "Central en línea"
+          }
+        }
+      ]
+    }
+  ]
+}
