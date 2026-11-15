@@ -10,6 +10,10 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-15
+
+- Maintenance release, no functional change.
+
 ## [1.0.0] - 2026-11-15
 
 First release.
@@ -39,5 +43,6 @@ First release.
 - The Disarm button of the dashboard widget never uses the stored code: it asks
   for the code every time.
 
-[Unreleased]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/prohand/gladys-sectoralarm/releases/tag/v1.0.0
