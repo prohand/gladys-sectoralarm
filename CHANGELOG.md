@@ -10,6 +10,10 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-11-16
+
+- Maintenance release, no functional change.
+
 ## [1.0.2] - 2026-11-16
 
 - Update `@gladysassistant/integration-sdk` to 0.16.1 (security update).
@@ -47,7 +51,8 @@ First release.
 - The Disarm button of the dashboard widget never uses the stored code: it asks
   for the code every time.
 
-[Unreleased]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/prohand/gladys-sectoralarm/releases/tag/v1.0.0
