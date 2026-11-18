@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-11-18
+
 ### Changed
 
 - Declared for the Sector Alarm countries only (`countries: ["NO", "SE", "FI", "IE", "ES", "FR"]`): the Gladys
@@ -57,7 +59,8 @@ First release.
 - The Disarm button of the dashboard widget never uses the stored code: it asks
   for the code every time.
 
-[Unreleased]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/prohand/gladys-sectoralarm/compare/v1.0.0...v1.0.1

@@ -1,6 +1,6 @@
 {
   "name": "gladys-sectoralarm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Gladys Assistant external integration for Sector Alarm (alarm panel, smart locks, smart plugs and sensors).",
   "type": "module",
