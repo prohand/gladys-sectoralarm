@@ -10,6 +10,12 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+### Changed
+
+- Declared for the Sector Alarm countries only (`countries: ["NO", "SE", "FI", "IE", "ES", "FR"]`): the Gladys
+  catalog of an instance located elsewhere no longer lists it in its browse
+  views (the search still finds it). Requires Gladys 5.3.0 or later.
+
 ## [1.0.3] - 2026-11-16
 
 - Maintenance release, no functional change.
