@@ -13,6 +13,7 @@
   "gladys_version": ">=5.3.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-sectoralarm/main/cover.png",
   "categories": ["security"],
+  "countries": ["NO", "SE", "FI", "IE", "ES", "FR"],
   "keywords": [
     "sector",
     "alarm",

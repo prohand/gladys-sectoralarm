@@ -221,3 +221,12 @@ test('the user documentation exists in every language', async () => {
     }
   }
 });
+
+test('the catalog countries: the Sector Alarm countries, which needs Gladys >= 5.3.0', () => {
+  // Sector Alarm sells its systems in Norway, Sweden, Finland, Ireland, Spain and France.
+  // Declared, the catalog of an instance located elsewhere hides the
+  // integration from its browse views (the search still finds it).
+  assert.deepEqual(manifest.countries, ['NO', 'SE', 'FI', 'IE', 'ES', 'FR']);
+  const [major, minor] = manifest.gladys_version.replace(/^>=/, '').split('.').map(Number);
+  assert.ok(major > 5 || (major === 5 && minor >= 3), 'countries needs Gladys 5.3.0');
+});
